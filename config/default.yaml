@@ -1,4 +1,4 @@
-functionName: 'sendActivationLink-development'
+functionName: 'myFreeDaySkill'
 credentials:
   accessKeyId: <yourAccessKey>
   secretAccessKey: <yourSecretKey>

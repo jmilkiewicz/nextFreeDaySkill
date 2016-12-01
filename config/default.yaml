@@ -1,0 +1,5 @@
+functionName: 'sendActivationLink-development'
+credentials:
+  accessKeyId: <yourAccessKey>
+  secretAccessKey: <yourSecretKey>
+  region: eu-west-1

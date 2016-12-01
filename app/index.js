@@ -38,7 +38,7 @@ const handlers = {
   },
   'GetNextFreeDay': function () {
     GetNextFreeDays(moment(), "Poland").then(event => {
-      const speechOutput = `${event.localName} ${event.date.fromNow()}`;
+      const speechOutput = `${event.englishName} ${event.date.fromNow()}`;
       this.emit(':tellWithCard', speechOutput, this.t('SKILL_NAME'), speechOutput);
     }, error => {
       this.emit(':tellWithCard', "sth broke", this.t('SKILL_NAME'), error);

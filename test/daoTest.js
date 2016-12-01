@@ -1,7 +1,6 @@
 'use strict';
 
 const Code = require('code');
-const _ = require('lodash/fp');
 const Lab = require('lab');
 const moment = require('moment');
 const sut = require('../app/src/calendarDao');

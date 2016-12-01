@@ -3,8 +3,6 @@
 const request = require('request');
 const Promise = require('bluebird');
 
-const URL = "http://kayaposoft.com/enrico/json/v1.0/?action=getPublicHolidaysForYear&year=2013&country=est&region="
-
 module.exports = {
   get(year, location){
     return new Promise((resolve, reject) => {

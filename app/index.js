@@ -2,7 +2,10 @@
 
 const Alexa = require('alexa-sdk');
 const dao = require('./src/calendarDao');
-const GetNextFreeDays = require('./src/getNextFreeDays')(dao);
+const GetNextFreeDaysService = require('./src/getNextFreeDays');
+const noCalendarForCountry = GetNextFreeDays.noCalendarForCountry;
+const noCountrySpecified = GetNextFreeDays.noCountrySpecified;
+const GetNextFreeDays = GetNextFreeDaysService(dao);
 const moment = require('moment');
 
 
@@ -15,6 +18,11 @@ const languageStrings = {
       GET_FACT_MESSAGE: "Next free day is: ",
       HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
       HELP_REPROMPT: 'What can I help you with?',
+      DISPLAY_CARD_TITLE: "%s  - Next Free Day in %s.",
+      COUNTRY_NOT_DEFINED: "I\'m sorry, I do not know in which country to look for.",
+      CALENDAR_NOT_FOUND: "I can not find a calendar for %s.",
+      "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
+      "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
     },
   },
@@ -24,6 +32,11 @@ const languageStrings = {
       GET_FACT_MESSAGE: "Next free day is: ",
       HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
       HELP_REPROMPT: 'What can I help you with?',
+      DISPLAY_CARD_TITLE: "%s  - Next Free Day in %s.",
+      COUNTRY_NOT_DEFINED: "I\'m sorry, I do not know in which country to look for",
+      CALENDAR_NOT_FOUND: "I can not find a calendar for %s.",
+      "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
+      "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
     },
   }
@@ -37,9 +50,31 @@ const handlers = {
     this.emit('GetNextFreeDay');
   },
   'GetNextFreeDay': function () {
-    GetNextFreeDays(moment(), "Poland").then(event => {
+
+    const itemSlot = this.event.request.intent.slots.Country;
+    const country = itemSlot ? itemSlot.value : undefined;
+
+    GetNextFreeDays(moment(), country).then(result => {
+
+      const cardTitle = this.t("DISPLAY_CARD_TITLE", this.t("SKILL_NAME"), country);
+
+      if (result === noCountrySpecified || result === noCalendarForCountry) {
+        const repromptSpeech = this.t("NOT_FOUND_REPROMPT");
+        this.attributes['repromptSpeech'] = repromptSpeech;
+        let speechOutput;
+        if (result === noCountrySpecified) {
+          speechOutput = this.t("COUNTRY_NOT_DEFINED");
+        } else {
+          speechOutput = this.t("CALENDAR_NOT_FOUND", country);
+        }
+        this.attributes['speechOutput'] = speechOutput;
+        this.emit(':ask', speechOutput, repromptSpeech);
+        return;
+      }
+
       const speechOutput = `${event.englishName} ${event.date.fromNow()}`;
-      this.emit(':tellWithCard', speechOutput, this.t('SKILL_NAME'), speechOutput);
+      this.attributes['repromptSpeech'] = this.t("RECIPE_REPEAT_MESSAGE");
+      this.emit(':askWithCard', speechOutput, this.attributes['repromptSpeech'], cardTitle, speechOutput);
     }, error => {
       this.emit(':tellWithCard', "sth broke", this.t('SKILL_NAME'), error);
     });

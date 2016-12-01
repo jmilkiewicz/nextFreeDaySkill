@@ -6,6 +6,8 @@ const Lab = require('lab');
 const Sinon = require('sinon');
 const moment = require('moment');
 const SutFactory = require('../app/src/getNextFreeDays');
+const noCountrySpecified = SutFactory.noCountrySpecified;
+const noCalendarForCountry = SutFactory.noCalendarForCountry;
 const lab = exports.lab = Lab.script();
 const describe = lab.describe;
 const it = lab.it;
@@ -99,6 +101,23 @@ describe('get free days', () => {
       expect(fetchFreedays.args[0]).to.be.equal([2016, 'pol']);
       done();
     });
+
+  });
+
+  describe('validation errors', () => {
+
+    it('returns noCountrySpecified when country is not defined', () => {
+      return sut(moment('6-1-2016', "DD-MM-YYYY"), undefined).then(result=>{
+        expect(result).to.be.equal(noCountrySpecified)
+      } );
+    });
+
+    it('returns noCalendarForCountry when no callendar for country is defined', () => {
+      return sut(moment('6-1-2016', "DD-MM-YYYY"), 'Szuflandia').then(result=>{
+        expect(result).to.be.equal(noCalendarForCountry)
+      } );
+    });
+
 
   });
 

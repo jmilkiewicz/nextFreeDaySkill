@@ -3,6 +3,10 @@
 const _ = require('lodash/fp');
 const countries = require('./countryCodes');
 const moment = require('moment');
+const Promise = require('bluebird');
+
+const noCalendarForCountry = { status: "missing calendar" };
+const noCountrySpecified = { status: "noCountry" };
 
 const toEvent = (x) => ({
   date: moment(`${x.date.day}-${x.date.month}-${x.date.year}`, "DD-MM-YYYY"),
@@ -21,12 +25,18 @@ const freeEventAfter = (from) => _.flow(_.map(toEvent), _.find(isEventAfterPredi
 
 module.exports = (dao) => {
 
-  return (from, location) => {
-
+  return (from, country) => {
     const findFreeEventInYear = (year) => dao.get(year, countryCode).then(freeEventAfter(from));
 
-    //TODO when no country code found
-    const countryCode = getCountryCode(location);
+    if (!country) {
+      return Promise.resolve(noCountrySpecified);
+    }
+    const countryCode = getCountryCode(country);
+
+    if(!countryCode){
+      return Promise.resolve(noCalendarForCountry);
+    }
+
     const currentYear = from.year();
 
     return findFreeEventInYear(currentYear).then(ev => {
@@ -35,6 +45,8 @@ module.exports = (dao) => {
       }
       return ev;
     });
-
   }
 };
+
+module.exports.noCountrySpecified = noCountrySpecified;
+module.exports.noCalendarForCountry = noCalendarForCountry;

@@ -5,10 +5,13 @@ const _ = require('lodash/fp');
 const Lab = require('lab');
 const Sinon = require('sinon');
 const moment = require('moment');
-const SutFactory = require('../src/getNextFreeDays');
+const SutFactory = require('../app/src/getNextFreeDays');
 const lab = exports.lab = Lab.script();
-const { describe, it, beforeEach } = lab;
-const { expect } = Code;
+const describe = lab.describe;
+const it = lab.it;
+const beforeEach = lab.beforeEach;
+
+const expect = Code.expect;
 
 
 describe('get free days', () => {

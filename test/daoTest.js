@@ -4,10 +4,11 @@ const Code = require('code');
 const _ = require('lodash/fp');
 const Lab = require('lab');
 const moment = require('moment');
-const sut = require('../src/calendarDao');
+const sut = require('../app/src/calendarDao');
 const lab = exports.lab = Lab.script();
-const { describe, it} = lab;
-const { expect } = Code;
+const describe = lab.describe;
+const it = lab.it;
+const expect = Code.expect;
 
 
 describe('get free days from kayaposoft', () => {

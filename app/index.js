@@ -3,8 +3,8 @@
 const Alexa = require('alexa-sdk');
 const dao = require('./src/calendarDao');
 const GetNextFreeDaysService = require('./src/getNextFreeDays');
-const noCalendarForCountry = GetNextFreeDays.noCalendarForCountry;
-const noCountrySpecified = GetNextFreeDays.noCountrySpecified;
+const noCalendarForCountry = GetNextFreeDaysService.noCalendarForCountry;
+const noCountrySpecified = GetNextFreeDaysService.noCountrySpecified;
 const GetNextFreeDays = GetNextFreeDaysService(dao);
 const moment = require('moment');
 
@@ -72,7 +72,7 @@ const handlers = {
         return;
       }
 
-      const speechOutput = `${event.englishName} ${event.date.fromNow()}`;
+      const speechOutput = `${result.englishName} ${result.date.fromNow()}`;
       this.attributes['repromptSpeech'] = this.t("RECIPE_REPEAT_MESSAGE");
       this.emit(':askWithCard', speechOutput, this.attributes['repromptSpeech'], cardTitle, speechOutput);
     }, error => {

@@ -160,7 +160,7 @@ module.exports = [
     "regions": []
   },
   {
-    "fullName": "Czech Republic",
+    "fullName": "Czechia",
     "countryCode": "cze",
     "fromDate": {
       "day": 1,

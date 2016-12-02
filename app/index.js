@@ -24,6 +24,8 @@ const languageStrings = {
       "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
+      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
+      WELCOME_REPROMT: "For instructions on what you can say, please say help me.",
     },
   },
   'en-US': {
@@ -38,13 +40,19 @@ const languageStrings = {
       "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
+      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
+      WELCOME_REPROMT: "For instructions on what you can say, please say help me.",
     },
   }
 };
 
 const handlers = {
   'LaunchRequest': function () {
-    this.emit('GetNextFreeDay');
+    this.attributes['speechOutput'] = this.t("WELCOME_MESSAGE", this.t("SKILL_NAME"));
+    // If the user either does not reply to the welcome message or says something that is not
+    // understood, they will be prompted again with this text.
+    this.attributes['repromptSpeech'] = this.t("WELCOME_REPROMT");
+    this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
   },
   'GetNextFreeDayIntent': function () {
     this.emit('GetNextFreeDay');

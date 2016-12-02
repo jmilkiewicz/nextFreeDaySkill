@@ -59,20 +59,20 @@ const handlers = {
       const cardTitle = this.t("DISPLAY_CARD_TITLE", this.t("SKILL_NAME"), country);
 
       if (result === noCountrySpecified || result === noCalendarForCountry) {
-        const repromptSpeech = this.t("NOT_FOUND_REPROMPT");
-        this.attributes['repromptSpeech'] = repromptSpeech;
+
         let speechOutput;
         if (result === noCountrySpecified) {
           speechOutput = this.t("COUNTRY_NOT_DEFINED");
         } else {
           speechOutput = this.t("CALENDAR_NOT_FOUND", country);
         }
+        this.attributes['repromptSpeech'] = this.t("NOT_FOUND_REPROMPT");
         this.attributes['speechOutput'] = speechOutput;
-        this.emit(':ask', speechOutput, repromptSpeech);
+        this.emit(':ask', speechOutput, this.t("NOT_FOUND_REPROMPT"));
         return;
       }
 
-      const speechOutput = `${result.englishName} ${result.date.fromNow()}`;
+      const speechOutput = `${result.englishName}, ${result.date.fromNow()}`;
       this.attributes['repromptSpeech'] = this.t("RECIPE_REPEAT_MESSAGE");
       this.emit(':askWithCard', speechOutput, this.attributes['repromptSpeech'], cardTitle, speechOutput);
     }, error => {

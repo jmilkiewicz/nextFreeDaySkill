@@ -18,10 +18,10 @@ const languageStrings = {
       GET_FACT_MESSAGE: "Next free day is: ",
       HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
       HELP_REPROMPT: 'What can I help you with?',
-      DISPLAY_CARD_TITLE: "%s  - Next Free Day in %s.",
+      DISPLAY_CARD_TITLE: "The Next Free Day in %s.",
+      NEXT_FREE_DAY: "The Next free day in %s is %s , in %s.",
       COUNTRY_NOT_DEFINED: "I\'m sorry, I do not know in which country to look for.",
       CALENDAR_NOT_FOUND: "I can not find a calendar for %s.",
-      "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
       WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
@@ -35,9 +35,9 @@ const languageStrings = {
       HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
       HELP_REPROMPT: 'What can I help you with?',
       DISPLAY_CARD_TITLE: "%s  - Next Free Day in %s.",
+      NEXT_FREE_DAY: "The Next free day in %s is %s , in %s.",
       COUNTRY_NOT_DEFINED: "I\'m sorry, I do not know in which country to look for",
       CALENDAR_NOT_FOUND: "I can not find a calendar for %s.",
-      "RECIPE_REPEAT_MESSAGE": "Try saying repeat.",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
       WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
@@ -63,9 +63,6 @@ const handlers = {
     const country = itemSlot ? itemSlot.value : undefined;
 
     GetNextFreeDays(moment(), country).then(result => {
-
-      const cardTitle = this.t("DISPLAY_CARD_TITLE", this.t("SKILL_NAME"), country);
-
       if (result === noCountrySpecified || result === noCalendarForCountry) {
 
         let speechOutput;
@@ -74,15 +71,12 @@ const handlers = {
         } else {
           speechOutput = this.t("CALENDAR_NOT_FOUND", country);
         }
-        this.attributes['repromptSpeech'] = this.t("NOT_FOUND_REPROMPT");
-        this.attributes['speechOutput'] = speechOutput;
         this.emit(':ask', speechOutput, this.t("NOT_FOUND_REPROMPT"));
         return;
       }
-
-      const speechOutput = `${result.englishName}, ${result.date.fromNow()}`;
-      this.attributes['repromptSpeech'] = this.t("RECIPE_REPEAT_MESSAGE");
-      this.emit(':askWithCard', speechOutput, this.attributes['repromptSpeech'], cardTitle, speechOutput);
+      const cardTitle = this.t("DISPLAY_CARD_TITLE", country);
+      const speechOutput = this.t("NEXT_FREE_DAY", country, result.englishName, result.date.fromNow());
+      this.emit(':tellWithCard', speechOutput, cardTitle, speechOutput);
     }, error => {
       this.emit(':tellWithCard', "sth broke", this.t('SKILL_NAME'), error);
     });

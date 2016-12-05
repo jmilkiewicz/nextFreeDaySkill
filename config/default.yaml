@@ -3,5 +3,5 @@ credentials:
   accessKeyId: <yourAccessKey>
   secretAccessKey: <yourSecretKey>
 region:
-  - eu-east-1
+  - us-east-1
   - eu-west-1

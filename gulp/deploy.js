@@ -18,7 +18,6 @@ function buildFile(cb) {
       if (err) {
         return cb(err);
       }
-
       if (files && files.length > 0) {
         cb(null, files[0].contents);
       } else {
@@ -69,14 +68,15 @@ function deployToLambda(file, region, cb) {
 
   gutil.log('Uploading to %s Zip file [%s] ...', region, formatBytes(file.length));
 
-  var lambda = new AWS.Lambda({
+  var lambdaParams = {
     apiVersion: '2015-03-31',
-    credentials: config.get('credentials'),
+    credentials: new AWS.Credentials(config.get('credentials')),
     region: region
-  });
+  };
+
+  var lambda = new AWS.Lambda(lambdaParams);
 
   lambda.updateFunctionCode(params, cb);
-
 }
 
 module.exports = deployAll;

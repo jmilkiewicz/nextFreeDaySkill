@@ -16,7 +16,7 @@ const languageStrings = {
     translation: {
       SKILL_NAME: 'Next free day',
       GET_FACT_MESSAGE: "Next free day is: ",
-      HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
+      HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with ?',
       HELP_REPROMPT: 'What can I help you with?',
       DISPLAY_CARD_TITLE: "The Next Free Day in %s.",
       NEXT_FREE_DAY: "The Next free day in %s is %s , %s . Have fun ! Bye",
@@ -24,7 +24,7 @@ const languageStrings = {
       CALENDAR_NOT_FOUND: "I can not find a calendar for %s .",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
-      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
+      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with ?",
       WELCOME_REPROMT: "For instructions on what you can say, please say help me.",
     },
   },
@@ -32,7 +32,7 @@ const languageStrings = {
     translation: {
       SKILL_NAME: 'Next free day',
       GET_FACT_MESSAGE: "Next free day is: ",
-      HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with?',
+      HELP_MESSAGE: 'You can say tell me what is the next day i can stay in bed till noon... What can I help you with ?',
       HELP_REPROMPT: 'What can I help you with?',
       DISPLAY_CARD_TITLE: "%s  - Next Free Day in %s .",
       NEXT_FREE_DAY: "The Next free day in %s is %s , %s . Have fun ! Bye",
@@ -40,7 +40,7 @@ const languageStrings = {
       CALENDAR_NOT_FOUND: "I can not find a calendar for %s .",
       "NOT_FOUND_REPROMPT": "What else can I help with?",
       STOP_MESSAGE: 'Goodbye!',
-      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with.",
+      WELCOME_MESSAGE: "Welcome to %s. You can ask a question like, what\'s the next free day in Poland? ... Now, what can I help you with ?",
       WELCOME_REPROMT: "For instructions on what you can say, please say help me.",
     },
   }

@@ -48,11 +48,7 @@ const languageStrings = {
 
 const handlers = {
   'LaunchRequest': function () {
-    this.attributes['speechOutput'] = this.t("WELCOME_MESSAGE", this.t("SKILL_NAME"));
-    // If the user either does not reply to the welcome message or says something that is not
-    // understood, they will be prompted again with this text.
-    this.attributes['repromptSpeech'] = this.t("WELCOME_REPROMT");
-    this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
+    this.emit(':ask', this.t("WELCOME_MESSAGE", this.t("SKILL_NAME")), this.t("WELCOME_REPROMT"));
   },
   'GetNextFreeDayIntent': function () {
     this.emit('GetNextFreeDay');
@@ -71,9 +67,11 @@ const handlers = {
         } else {
           speechOutput = this.t("CALENDAR_NOT_FOUND", country);
         }
-        this.emit(':ask', speechOutput, this.t("NOT_FOUND_REPROMPT"));
+        const reprompt = this.t("NOT_FOUND_REPROMPT");
+        this.emit(':ask', speechOutput + reprompt, reprompt);
         return;
       }
+
       const cardTitle = this.t("DISPLAY_CARD_TITLE", country);
       const speechOutput = this.t("NEXT_FREE_DAY", country, result.englishName, result.date.fromNow());
       this.emit(':tellWithCard', speechOutput, cardTitle, speechOutput);

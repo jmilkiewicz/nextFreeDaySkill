@@ -2,4 +2,6 @@ functionName: 'myFreeDaySkill'
 credentials:
   accessKeyId: <yourAccessKey>
   secretAccessKey: <yourSecretKey>
-  region: eu-west-1
+region:
+  - eu-east-1
+  - eu-west-1

@@ -7,41 +7,79 @@ var config = require('config');
 var tmp = require('tmp');
 var zip = require('gulp-zip');
 
-AWS.config.update(config.get('credentials'));
 
-var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
+function buildFile(cb) {
+  tmp.tmpName({ postfix: '.zip', keep: true }, function _tempNameGenerated(err, path) {
+    if (err) {
+      return cb(err);
+    }
+
+    gulp.src('build/**/*').pipe(zip(path)).pipe(gutil.buffer(function (err, files) {
+      if (err) {
+        return cb(err);
+      }
+
+      if (files && files.length > 0) {
+        cb(null, files[0].contents);
+      } else {
+        cb(new Error("No zip file found or empty."));
+      }
+    }));
+  });
+};
 
 
-function deployToLambda(cb) {
-    tmp.tmpName({postfix: '.zip', keep: true}, function _tempNameGenerated(err, path) {
-        if (err) {
-            return cb(err);
-        }
+function deployAll(cb) {
+  buildFile(function (err, file) {
+    if (err) {
+      return cb(err)
+    }
 
-        gulp.src('build/**/*').
-            pipe(zip(path)).
-            pipe(gutil.buffer(function(err, files) {
-                if (err) {
-                    return cb(err);
-                }
-
-                if(files && files.length > 0){
-                    var params = {
-                        FunctionName: config.get('functionName'),
-                        ZipFile: files[0].contents
-                    };
-
-                    gutil.log('Uploading Zip file [%s] ...', formatBytes(files[0].contents.length));
-
-                    lambda.updateFunctionCode(params, cb);
-                } else {
-                    cb(new Error("No zip file found or empty."));
-                }
-            }));
+    var regions = config.get('region');
+    Promise.all(regions.map(deployAsPromise.bind(null, file))).then(function () {
+      cb();
+    }, function (err) {
+      cb(err)
     });
+
+  })
+
 }
 
-module.exports = deployToLambda;
+
+function deployAsPromise(file, region) {
+  return new Promise(function (resolve, reject) {
+    deployToLambda(file, region, function (err, sth) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(sth);
+      }
+    })
+  });
+}
+
+
+function deployToLambda(file, region, cb) {
+
+  var params = {
+    FunctionName: config.get('functionName'),
+    ZipFile: file
+  };
+
+  gutil.log('Uploading to %s Zip file [%s] ...', region, formatBytes(file.length));
+
+  var lambda = new AWS.Lambda({
+    apiVersion: '2015-03-31',
+    credentials: config.get('credentials'),
+    region: region
+  });
+
+  lambda.updateFunctionCode(params, cb);
+
+}
+
+module.exports = deployAll;
 
 /**
  * Helper function to convert bytes to KB, MB and so on...

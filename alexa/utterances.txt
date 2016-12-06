@@ -1,0 +1,18 @@
+GetNextFreeDayIntent what is the next free day in {Country}
+GetNextFreeDayIntent what is the next bank holiday in {Country}
+GetNextFreeDayIntent what is the next public holiday in {Country}
+GetNextFreeDayIntent when is the next free day in {Country}
+GetNextFreeDayIntent when is the next bank holiday in {Country}
+GetNextFreeDayIntent when is the next public holiday in {Country}
+GetNextFreeDayIntent give me the next free day in {Country}
+GetNextFreeDayIntent give me the next bank holiday in {Country}
+GetNextFreeDayIntent give me the next public holiday in {Country}
+GetNextFreeDayIntent tell me when is the next free day in {Country}
+GetNextFreeDayIntent tell me when is the next public holiday in {Country}
+GetNextFreeDayIntent tell me when is the next bank holiday in {Country}
+GetNextFreeDayIntent when is the the next day in {Country} i can stay in bed till noon
+GetNextFreeDayIntent what is the next day in {Country} i can stay in bed till noon
+GetNextFreeDayIntent when in {Country} can I stay in bed till noon
+GetNextFreeDayIntent the next bank holiday in {Country}
+GetNextFreeDayIntent the next public holiday in {Country}
+GetNextFreeDayIntent the next free day in {Country}
